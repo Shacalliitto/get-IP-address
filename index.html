@@ -61,20 +61,21 @@
             },
         ]
 
-        fetch('http://ip-api.com/json')
+        fetch('https://ipapi.co/json/')
             .then(function (response) {
                 return response.json();
             })
             .then(function (data) {
+                console.log(data)
                 var ip_address = (data);
                 document.title = ip_address.city + ", " + ip_address.country
                 document.getElementById('ip').innerHTML = ip_address.city + ", " + ip_address.country;
-                document.getElementById('reg').innerHTML = ip_address.regionName;
-                centerCords.lng = ip_address.lon;
-                centerCords.lat = ip_address.lat;
+                document.getElementById('reg').innerHTML = ip_address.region;
+                centerCords.lng = ip_address.longitude;
+                centerCords.lat = ip_address.latitude;
                 markersOnMap[0].LatLng = [{
-                    lat: parseFloat(ip_address.lat),
-                    lng: parseFloat(ip_address.lon)
+                    lat: parseFloat(ip_address.latitude),
+                    lng: parseFloat(ip_address.longitude)
                 }]
             });
 
