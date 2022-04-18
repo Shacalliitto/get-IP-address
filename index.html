@@ -5,7 +5,6 @@
     <meta charset="UTF-8">
     <meta http-equiv="X-UA-Compatible" content="IE=edge">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta http-equiv="Content-Security-Policy" content="upgrade-insecure-requests"> 
     <title>GET API</title>
     <style>
         body {
@@ -25,10 +24,10 @@
         }
 
         #map {
-        width: 800px;
-        height: 800px;
-        border: 2px solid black;
-    }
+            width: 800px;
+            height: 800px;
+            border: 2px solid black;
+        }
     </style>
 </head>
 
@@ -38,9 +37,7 @@
         <p>Região: <span id="reg"></span></p>
     </div>
     <div id="map"></div>
-    <script src="https://code.jquery.com/jquery-3.6.0.js"></script>
     <script>
-        var teste;
         var map;
         var InforObj = [];
         var centerCords = {
@@ -64,22 +61,26 @@
             },
         ]
 
-        $.getJSON('http://ip-api.com/json', function (data) {
-            var ip_address = (data);
-            document.title = ip_address.city + ", " + ip_address.country
-            document.getElementById('ip').innerHTML = ip_address.city + ", " + ip_address.country;
-            document.getElementById('reg').innerHTML = ip_address.regionName;
-            centerCords.lng = ip_address.lon;
-            centerCords.lat = ip_address.lat;
-            markersOnMap[0].LatLng = [{
-                lat: parseFloat(ip_address.lat),
-                lng: parseFloat(ip_address.lon)
-            }]
-        });
+        fetch('http://ip-api.com/json')
+            .then(function (response) {
+                return response.json();
+            })
+            .then(function (data) {
+                var ip_address = (data);
+                document.title = ip_address.city + ", " + ip_address.country
+                document.getElementById('ip').innerHTML = ip_address.city + ", " + ip_address.country;
+                document.getElementById('reg').innerHTML = ip_address.regionName;
+                centerCords.lng = ip_address.lon;
+                centerCords.lat = ip_address.lat;
+                markersOnMap[0].LatLng = [{
+                    lat: parseFloat(ip_address.lat),
+                    lng: parseFloat(ip_address.lon)
+                }]
+            });
+
 
         function addMarkerInfo() {
             for (var i = 0; i < markersOnMap.length; i++) {
-                console.log(markersOnMap)
                 const marker = new google.maps.Marker({
                     position: markersOnMap[0].LatLng[0],
                     icon: icons[markersOnMap[i].type].icon,
@@ -102,8 +103,8 @@
 
     </script>
     <script
-    src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAh6ZayixjLChzKUcXD0vN7PNxG2OBUcSs&#038;libraries=places&callback=initMap'
-    async defer></script>
+        src='https://maps.googleapis.com/maps/api/js?key=AIzaSyAh6ZayixjLChzKUcXD0vN7PNxG2OBUcSs&#038;libraries=places&callback=initMap'
+        async defer></script>
 </body>
 
 </html>
